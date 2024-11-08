@@ -726,9 +726,11 @@ Groupboxes.SelfCheats:AddToggle("gm", {
 }):AddKeyPicker("gmKey", {
     Default = "G",
     SyncToggleState = true,
-    NoUI = false,
+
     Mode = "Toggle",
-    Text = "Godmode"
+
+    Text = "Godmode",
+    NoUI = false,
 })
 
 
