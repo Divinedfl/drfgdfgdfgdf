@@ -1,3 +1,4 @@
+-- \\ DIVINE HUB V1 (or V2 idk first one was ass) \\ --
 
 -- \ To check if the script was already loaded \ -
 if getgenv().Loaded then
@@ -722,6 +723,11 @@ Groupboxes.SelfCheats:AddDivider()
 Groupboxes.SelfCheats:AddToggle("gm", {
     Text = "Godmode + Noclip Bypass",
     Default = false,
+}):AddKeyPicker("gmKey", {
+    Default = "G",
+    SyncToggleState = true,
+    NoUI = false,
+    Mode = "Toggle"
 })
 
 
@@ -1851,15 +1857,6 @@ end)
 Connections.RoomHandler = workspace.CurrentRooms.ChildAdded:Connect(function(child: Model)
     child:WaitForChild("Assets")
 
-
-
-    for _, v in pairs(child:GetDescendants()) do
-        if v:IsA("ProximityPrompt") then
-            v.MaxActivationDistance = Options.PromptReach.Value
-            v.RequiresLineOfSight = not Toggles.PromptClip.Value
-        end
-    end
-
     if Toggles.entitynotif.Value then
         if child:GetAttribute("RawName") == "HaltHallway" then
             Library:Notify("Halt is in the next room.")
@@ -1892,6 +1889,13 @@ Connections.RoomChanged = PlayerVariables.Player:GetAttributeChangedSignal("Curr
             if i ~= tonumber(CurrentRoom) then
                 v:Disconnect()
             end
+        end
+    end
+
+    for _, v in pairs(workspace.CurrentRooms[CurrentRoom]:GetDescendants()) do
+        if v:IsA("ProximityPrompt") then
+            v.MaxActivationDistance = Options.PromptReach.Value
+            v.RequiresLineOfSight = not Toggles.PromptClip.Value
         end
     end
 
