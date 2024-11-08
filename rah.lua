@@ -142,7 +142,7 @@ local IsEntity = {
         "FigureRagdoll",
         "FigureRig",
         "BananaPeel",
-        "SeekMoving",
+        "SeekMovingNewClone",
         "Eyes",
         "JeffTheKiller",
         "Egg",
@@ -1303,6 +1303,10 @@ Toggles.EntityESP:OnChanged(function(value)
                         Color = Options.EntityESPColor.Value,
                         Type = "Entity"
                     })
+
+                    if v.Name ~= "SeekMovingNewClone" and v.Name ~= "JeffTheKiller" then
+                        v.PrimaryPart.Transparency = 0
+                    end
                 end
             end
         end
@@ -1770,9 +1774,11 @@ Connections.MainRenderStepped = RunService.RenderStepped:Connect(function()
 end)
 
 Connections.EntityHandler = workspace.ChildAdded:Connect(function(child: Model)
-    if not child:IsA("Model") then return; end
+    if not child:IsA("Model") then
+        return;
+    end
 
-    task.wait(0.5)
+
     if Toggles.EntityESP.Value then
         for i, element in pairs(IsEntity.Names) do
             if element == child.Name and (child:GetPivot().Position - PlayerVariables.Character:GetPivot().Position).Magnitude < 750 then
@@ -1782,6 +1788,10 @@ Connections.EntityHandler = workspace.ChildAdded:Connect(function(child: Model)
                     Color = Options.EntityESPColor.Value,
                     Type = "Entity"
                 })
+
+                if child.Name ~= "SeekMovingNewClone" and child.Name ~= "JeffTheKiller" then
+                    child.PrimaryPart.Transparency = 0
+                end
             end
         end
     end
@@ -1895,13 +1905,6 @@ Connections.RoomChanged = PlayerVariables.Player:GetAttributeChangedSignal("Curr
         end
     end
 
-    for _, v in pairs(workspace.CurrentRooms[CurrentRoom]:GetDescendants()) do
-        if v:IsA("ProximityPrompt") then
-            v.MaxActivationDistance = Options.PromptReach.Value
-            v.RequiresLineOfSight = not Toggles.PromptClip.Value
-        end
-    end
-
     if Connections[tonumber(CurrentRoom)] then
         Connections[tonumber(CurrentRoom)]:Disconnect()
     end
@@ -2010,6 +2013,11 @@ Connections.RoomChanged = PlayerVariables.Player:GetAttributeChangedSignal("Curr
                     Type = "Item"
                 })
             end
+        end
+
+        if v:IsA("ProximityPrompt") then
+            v.RequiresLineOfSight = not Toggles.PromptClip.Value
+            v.MaxActivationDistance = Options.PromptReach.Value
         end
 
         if Toggles.GoldESP.Value then
@@ -2157,6 +2165,8 @@ MenuGroup:AddToggle("CustomCursor", {
 })
 
 Library:OnUnload(function()
+    getgenv().Loaded = false
+
     for _, toggle in pairs(Toggles) do
         toggle:SetValue(false)
     end
@@ -2169,7 +2179,7 @@ Library:OnUnload(function()
 
     Library.Unloaded = true
 
-    getgenv().Loaded = false
+    PlayerVariables.CollisionClone:Destroy()
 end)
 
 Library.ToggleKeybind = Options.MenuKeybind
