@@ -1,4 +1,3 @@
--- \\ DIVINE HUB V1 (or V2 idk first one was ass) \\ --
 
 -- \ To check if the script was already loaded \ -
 if getgenv().Loaded then
