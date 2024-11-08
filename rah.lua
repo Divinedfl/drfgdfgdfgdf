@@ -1,4 +1,4 @@
-
+-- \\ DIVINE HUB V1 (or V2 idk first one was ass) \\ --
 
 -- \ To check if the script was already loaded \ -
 if getgenv().Loaded then
@@ -727,7 +727,8 @@ Groupboxes.SelfCheats:AddToggle("gm", {
     Default = "G",
     SyncToggleState = true,
     NoUI = false,
-    Mode = "Toggle"
+    Mode = "Toggle",
+    Text = "Godmode"
 })
 
 
